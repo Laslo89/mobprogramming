@@ -12,11 +12,24 @@ Create a small Web Application that lets you rate your favorite memes. As good s
 
     1.1 (Bonus / Stretch goal) Store the meme data locally so you dont have to pull the memes every time you reload or visit the app.
 
-2. Compare Mode - Create a view where you can choose between two memes which one is funnier
+2. Compare Mode - Create a view where you can choose between two memes which one is funnier.
 
 3. You Favorites - Create a view where you can look at your favourite Memes (the funnier ones)
 
 ## Info
 
 API Host: [https://api.imgflip.com](https://api.imgflip.com)
+
 Endpoint: get_memes
+
+## Layouts
+
+These Layouts are just examples and do not have to be followed strictly ;-)
+
+### Compare View
+
+![compare view layout](https://github.com/Laslo89/mobprogramming/blob/master/compare-view.jpg)
+
+### Favorite View
+
+![favorite view layout](https://github.com/Laslo89/mobprogramming/blob/master/favorite-view.jpg)
