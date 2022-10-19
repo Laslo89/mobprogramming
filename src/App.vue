@@ -1,13 +1,16 @@
 <template>
   <h1>Meme Rating App</h1>
-  <CompareView />
+  <CompareView :meme-pair="randomPair" />
 </template>
 
 <script setup>
 import CompareView from './components/CompareView.vue'
 import { memeStorage } from "./memesStorage";
+import { useMemeComparer } from '../useMemeComparer'
 import { ref } from "vue";
+
 const memes = ref(null);
+const {getRandomPair, randomPair} = useMemeComparer(memes)
 
 async function getMemes() {
   const memesFromLocalStorage = memeStorage.get();
@@ -29,7 +32,13 @@ async function getMemes() {
   }
 
 }
-getMemes();
+
+async function init() {
+  await getMemes();
+  getRandomPair()
+}
+
+init()
 </script>
 
 <style lang="scss"></style>
