@@ -1,10 +1,12 @@
 <template>
   <h1>Meme Rating App</h1>
+  <CompareView />
 </template>
 
 <script setup>
+import CompareView from './components/CompareView.vue'
 import { memeStorage } from "./memesStorage";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 const memes = ref(null);
 
 async function getMemes() {
@@ -25,8 +27,7 @@ async function getMemes() {
   } catch (error) {
     console.log(error);
   }
-  // get them from https://api.imgflip.com/get_memes data => memes
-  // transform json into array of meme objects (with id, url, name)
+
 }
 getMemes();
 </script>
