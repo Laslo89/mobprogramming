@@ -1,41 +1,25 @@
 <template>
   <h1>Meme Rating App</h1>
-  <CompareView :meme-pair="randomPair" />
+  <div v-if="loading"> Loading, please wait . . .</div>
+  <template v-else>
+    <CompareView id="view1" />
+    <CompareView id="view2"/>
+    <CompareView id="view2"/>
+  </template>
 </template>
 
 <script setup>
 import CompareView from './components/CompareView.vue'
-import { memeStorage } from "./memesStorage";
-import { useMemeComparer } from '../useMemeComparer'
-import { ref } from "vue";
+import {useMemeStore} from "./store/memeStore.js";
+import {storeToRefs} from "pinia";
 
-const memes = ref(null);
-const {getRandomPair, randomPair} = useMemeComparer(memes)
 
-async function getMemes() {
-  const memesFromLocalStorage = memeStorage.get();
-  if (memesFromLocalStorage) {
-    memes.value = memesFromLocalStorage;
-    return;
-  }
-  try {
-    const jsonResult = await fetch("https://api.imgflip.com/get_memes");
-    const result = await jsonResult.json();
-    memes.value = result.data.memes.map(({ id, name, url }) => ({
-      id,
-      name,
-      url,
-    }));
-    memeStorage.save(memes.value);
-  } catch (error) {
-    console.log(error);
-  }
-
-}
+const memeStore = useMemeStore()
+const { loading }= storeToRefs(memeStore)
+const { fetchMemes } = memeStore
 
 async function init() {
-  await getMemes();
-  getRandomPair()
+  await fetchMemes()
 }
 
 init()
