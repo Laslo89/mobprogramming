@@ -6,7 +6,7 @@ import {useRatingStore} from "./ratingStore.js";
 
 const usePairStore = () => {
     const memeStore = useMemeStore()
-    const {memes} = storeToRefs(memeStore)
+    const {getRandom} = memeStore
 
     const memePair = ref([])
     const loading = ref(true)
@@ -29,15 +29,6 @@ const usePairStore = () => {
             }
         }
     })
-
-    function getRandom(idToAvoid) {
-        let memeArray = [...unref(memes)]
-        const indexToAvoid = memeArray.findIndex((meme) => meme.id === idToAvoid)
-        if (indexToAvoid > -1) {
-            memeArray.splice(indexToAvoid, 1)
-        }
-        return memeArray[Math.floor(Math.random() * memeArray.length)];
-    }
 
     function createRandomPair() {
         loading.value = true

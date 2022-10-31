@@ -15,7 +15,7 @@
 
 <script setup>
 import CompareView from './components/CompareView.vue'
-import {useMemeStore} from "./store/memeStore.js";
+import {useMemeStore} from "./compositionStore/memeStore.js";
 import {storeToRefs} from "pinia";
 import RatingView from "./components/RatingView.vue";
 import {ref} from "vue";

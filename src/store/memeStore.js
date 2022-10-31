@@ -1,6 +1,4 @@
 import {defineStore} from "pinia";
-import {unref} from "vue";
-
 
 export const useMemeStore = defineStore('memeStore', {
     state: () => ({
@@ -9,9 +7,19 @@ export const useMemeStore = defineStore('memeStore', {
 
     }),
     actions: {
-        getById (id) {
+        getById(id) {
             return this.memes.find((meme) => meme.id === id)
         },
+
+        getRandom(idToAvoid) {
+            let memeArray = [...this.memes]
+            const indexToAvoid = memeArray.findIndex((meme) => meme.id === idToAvoid)
+            if (indexToAvoid > -1) {
+                memeArray.splice(indexToAvoid, 1)
+            }
+            return memeArray[Math.floor(Math.random() * memeArray.length)];
+        },
+
         async fetchMemes() {
             this.loading = true
             this.memes = []

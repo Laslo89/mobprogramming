@@ -9,6 +9,15 @@ export const useMemeStore = defineStore('memeStore', () => {
         return unref(memes).find((meme) => meme.id === id)
     }
 
+    function getRandom(idToAvoid) {
+        let memeArray = [...unref(memes)]
+        const indexToAvoid = memeArray.findIndex((meme) => meme.id === idToAvoid)
+        if (indexToAvoid > -1) {
+            memeArray.splice(indexToAvoid, 1)
+        }
+        return memeArray[Math.floor(Math.random() * memeArray.length)];
+    }
+
     async function fetchMemes() {
         loading.value = true
         memes.value = []
@@ -30,6 +39,7 @@ export const useMemeStore = defineStore('memeStore', () => {
     return {
         loading,
         memes,
+        getRandom,
         getById,
         fetchMemes
     }

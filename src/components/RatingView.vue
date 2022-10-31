@@ -1,7 +1,7 @@
 <template>
   <table class="meme-rating">
     <tr>
-    <th>Place</th>
+    <th>Ranking</th>
     <th>Score</th>
     <th>Name</th>
     <th>ID</th>
@@ -16,9 +16,9 @@
 </template>
 
 <script setup>
-import {useMemeStore} from "../store/memeStore.js";
+import {useMemeStore} from "../compositionStore/memeStore.js";
 import {storeToRefs} from "pinia";
-import {useRatingStore} from "../store/ratingStore.js";
+import {useRatingStore} from "../compositionStore/ratingStore.js";
 
 const memeStore = useMemeStore()
 const ratingStore = useRatingStore()

@@ -13,9 +13,9 @@
 </template>
 
 <script setup>
-import { createPairStore } from "../store/pairStore.js";
+import { createPairStore } from "../compositionStore/pairStore.js";
 import { storeToRefs } from "pinia";
-import {useRatingStore} from "../store/ratingStore.js";
+import {useRatingStore} from "../compositionStore/ratingStore.js";
 
 
 const props = defineProps({
@@ -31,17 +31,16 @@ const pairStore = usePairStore()
 const { loading, memePair, favoriteId } = storeToRefs(pairStore)
 const { createRandomPair } = pairStore
 
-
 const ratingStore = useRatingStore()
 const { voteFor } = ratingStore
 
-const vote = (meme) => {
+function vote(meme) {
   voteFor(meme)
   getPair()
 }
 
-async function getPair() {
-  await createRandomPair()
+function getPair() {
+  createRandomPair()
 }
 
 getPair()

@@ -29,21 +29,12 @@ const options = {
         },
     },
     actions: {
-        getRandom(idToAvoid) {
-            const memeStore = useMemeStore()
-            const {memes} = storeToRefs(memeStore)
-            let memeArray = [...unref(memes)]
-            const indexToAvoid = memeArray.findIndex((meme) => meme.id === idToAvoid)
-            if (indexToAvoid > -1) {
-                memeArray.splice(indexToAvoid, 1)
-            }
-            return memeArray[Math.floor(Math.random() * memeArray.length)];
-        },
-
         createRandomPair() {
+            const memeStore = useMemeStore()
+            const {getRandom} = memeStore
             this.loading = true
-            const memeOne = this.getRandom()
-            this.memePair = [this.getRandom(), this.getRandom(memeOne.id)]
+            const memeOne = getRandom()
+            this.memePair = [getRandom(), getRandom(memeOne.id)]
             this.loading = false
         }
 
