@@ -5,7 +5,8 @@
   <div v-else class="meme-pair">
     <div class="meme-pair__meme" v-for="meme in memePair" :key="meme.id">
       <h3>{{ meme.name }}</h3>
-      <img :src="meme.url"/>
+      <img :src="meme.url" @click="vote(meme)"/>
+      <div v-if="meme.id === favoriteId">Current Favorite</div>
     </div>
   </div>
 
@@ -14,6 +15,7 @@
 <script setup>
 import { createPairStore } from "../store/pairStore.js";
 import { storeToRefs } from "pinia";
+import {useRatingStore} from "../store/ratingStore.js";
 
 
 const props = defineProps({
@@ -22,11 +24,21 @@ const props = defineProps({
     type: String,
   }
 })
-const useStore = createPairStore(props.id)
-const store = useStore()
-const { loading, memePair } = storeToRefs(store)
-const { createRandomPair } = store
+// this creates a new instance with id if it doesn't exist yet
+const usePairStore = createPairStore(props.id)
+const pairStore = usePairStore()
 
+const { loading, memePair, favoriteId } = storeToRefs(pairStore)
+const { createRandomPair } = pairStore
+
+
+const ratingStore = useRatingStore()
+const { voteFor } = ratingStore
+
+const vote = (meme) => {
+  voteFor(meme)
+  getPair()
+}
 
 async function getPair() {
   await createRandomPair()

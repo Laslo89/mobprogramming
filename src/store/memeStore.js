@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import {unref} from "vue";
 
 
 export const useMemeStore = defineStore('memeStore', {
@@ -7,12 +8,11 @@ export const useMemeStore = defineStore('memeStore', {
         loading: true
 
     }),
-    getters: {
-        allMemes: (state) => state.memes // JSON.parse(localStorage.getItem("memes"))
-    },
     actions: {
+        getById (id) {
+            return this.memes.find((meme) => meme.id === id)
+        },
         async fetchMemes() {
-            console.log('fetching in option meme store')
             this.loading = true
             this.memes = []
             try {
@@ -23,16 +23,11 @@ export const useMemeStore = defineStore('memeStore', {
                     name,
                     url,
                 }));
-                // this.saveToStorage(this.memes.value);
             } catch (error) {
                 console.log(error)
             } finally {
                 this.loading = false
             }
         },
-
-        saveToStorage(data) {
-            localStorage.setItem("memes", JSON.stringify(data));
-        }
     },
 })

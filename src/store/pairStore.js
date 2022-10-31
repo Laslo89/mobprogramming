@@ -1,18 +1,39 @@
 import {defineStore, storeToRefs} from "pinia";
 import {unref} from "vue";
-import {useMemeStore} from "../compositionStore/memeStore.js";
+import {useMemeStore} from "./memeStore.js";
+import {useRatingStore} from "./ratingStore.js";
 
 const options = {
     state: () => ({
         memePair: [],
         loading: true
     }),
+    getters: {
+        favoriteId: (state) => {
+            const ratingStore = useRatingStore()
+            const {ratings} = storeToRefs(ratingStore)
+            const ratingOne = unref(ratings).find((rating) => rating.id === state.memePair[0]?.id)
+            const ratingTwo = unref(ratings).find((rating) => rating.id === state.memePair[1]?.id)
+
+            if (ratingOne === undefined && ratingTwo === undefined) {
+                return null
+            } else {
+                if (ratingOne === undefined) {
+                    return ratingTwo.id
+                } else if (ratingTwo === undefined) {
+                    return ratingOne.id
+                } else {
+                    return ratingOne.score >= ratingTwo.score ? ratingOne.id : ratingTwo.id
+                }
+            }
+        },
+    },
     actions: {
         getRandom(idToAvoid) {
             const memeStore = useMemeStore()
-            const {allMemes} = storeToRefs(memeStore)
-            const memeArray = unref(allMemes)
-            const indexToAvoid = memeArray.findIndex(({id}) => id === idToAvoid)
+            const {memes} = storeToRefs(memeStore)
+            let memeArray = [...unref(memes)]
+            const indexToAvoid = memeArray.findIndex((meme) => meme.id === idToAvoid)
             if (indexToAvoid > -1) {
                 memeArray.splice(indexToAvoid, 1)
             }
@@ -20,7 +41,6 @@ const options = {
         },
 
         createRandomPair() {
-            console.log('creating in option pair store')
             this.loading = true
             const memeOne = this.getRandom()
             this.memePair = [this.getRandom(), this.getRandom(memeOne.id)]
@@ -29,6 +49,8 @@ const options = {
 
     }
 }
+
+// this creates a new instance with id if it doesn't exist yet
 export function createPairStore(id) {
     return defineStore(id,{...options})
 }

@@ -1,22 +1,29 @@
 <template>
   <h1>Meme Rating App</h1>
+  <button @mouseenter="showRating = true" @mouseleave="showRating = false" style="position: relative;">
+    SHOW RATING TABLE
+    <RatingView v-if="showRating"/>
+  </button>
+
   <div v-if="loading"> Loading, please wait . . .</div>
-  <template v-else>
-    <CompareView id="view1" />
+  <div v-else>
+    <CompareView id="view1"/>
     <CompareView id="view2"/>
     <CompareView id="view2"/>
-  </template>
+  </div>
 </template>
 
 <script setup>
 import CompareView from './components/CompareView.vue'
 import {useMemeStore} from "./store/memeStore.js";
 import {storeToRefs} from "pinia";
+import RatingView from "./components/RatingView.vue";
+import {ref} from "vue";
 
-
+const showRating = ref(false)
 const memeStore = useMemeStore()
-const { loading }= storeToRefs(memeStore)
-const { fetchMemes } = memeStore
+const {loading} = storeToRefs(memeStore)
+const {fetchMemes} = memeStore
 
 async function init() {
   await fetchMemes()
@@ -24,5 +31,3 @@ async function init() {
 
 init()
 </script>
-
-<style lang="scss"></style>

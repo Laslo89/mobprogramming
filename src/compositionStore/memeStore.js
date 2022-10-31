@@ -1,17 +1,15 @@
-import { defineStore } from "pinia";
-import { computed, ref, unref } from "vue";
+import {defineStore} from "pinia";
+import {computed, ref, unref} from "vue";
 
 export const useMemeStore = defineStore('memeStore', () => {
     const memes = ref(null)
     const loading = ref(true)
 
-
-    const isLoading = computed(() => unref(loading))
-    const allMemes = computed(() => unref(memes)) // JSON.parse(localStorage.getItem("memes"))
-
+    function getById(id) {
+        return unref(memes).find((meme) => meme.id === id)
+    }
 
     async function fetchMemes() {
-        console.log('fetching in composition meme store')
         loading.value = true
         memes.value = []
         try {
@@ -22,7 +20,6 @@ export const useMemeStore = defineStore('memeStore', () => {
                 name,
                 url,
             }));
-            saveToStorage(memes.value);
         } catch (error) {
             console.log(error)
         } finally {
@@ -30,13 +27,10 @@ export const useMemeStore = defineStore('memeStore', () => {
         }
     }
 
-    function saveToStorage(data) {
-        localStorage.setItem("memes", JSON.stringify(data));
-    }
-
     return {
         loading,
         memes,
+        getById,
         fetchMemes
     }
 })
